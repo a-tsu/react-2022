@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch API Sample1</title>
+  <style>
+    #res{ text-decoration:underline; font-weight:bold; }
+    #result{ display:none; }
+  </style>
+</head>
+<body>
+
+<section>
+  <h1>Fetch API Sample1</h1>
+
+  <div id="nowloading">
+    ...サーバから時間を取得中
+  </div>
+  <div id="result">
+    レスポンスは <time id="res"></time> です。
+  </div>
+</section>
+
+<script>
+    window.onload = ()=>{
+  const URL = "http://localhost:8080/";  // リクエスト先
+
+  //--------------------------------------
+  // 現在時間を取得する
+  //--------------------------------------
+  fetch(URL)
+    .then((res)=>{
+      if( ! res.ok ) {
+        throw new Error(`Fetch: ${res.status} ${res.statusText}`);
+      }
+      console.log('succeed!!');
+      return( res.json() );
+    })
+    .then((json)=>{
+      document.querySelector("#res").innerHTML = JSON.stringify(json);
+
+      // 表示を切り替える
+      document.querySelector("#nowloading").style.display = "none";
+      document.querySelector("#result").style.display = "block";
+    })
+    .catch((error)=>{
+      alert("エラーが発生しました");
+      console.error(`[FetchAPI] ${error}, ${URL}`);
+    })
+}
+</script>
+
+</body>
+</html>
